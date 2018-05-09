@@ -13,7 +13,12 @@
 
 <script lang="ts">
 import { Component, Emit, Inject, Model, Prop, Provide, Vue, Watch } from 'vue-property-decorator'
-import MyComponent from './Component.vue'
+import { State, Action, Getter, Mutation } from 'vuex-class'
+import { ProfileState } from './store/modules/profile/types';
+import MyComponent from './components/Component.vue';
+import { AxiosPromise } from 'axios'
+
+const namespace: string = 'profile';
 
 @Component({
   components: {
@@ -21,6 +26,15 @@ import MyComponent from './Component.vue'
   }
 })
 export default class App extends Vue {
+  // MapState
+  @State('profile') profile: ProfileState
+  // MapAction
+  @Action('fetchName', { namespace }) fetchName: AxiosPromise<ProfileState>;
+  // MapGetter
+  @Getter('firstName', { namespace }) firstName: string;
+  @Getter('lastName', { namespace }) lastName: string;
+  // MapMutation
+  @Mutation('setProfile', { namespace }) setProfile: void;
   // props
   @Prop({ default: 'lgybetter' }) author?: string
   // computed
@@ -48,8 +62,11 @@ export default class App extends Vue {
   created () {
     console.log('created!')
   }
-  mounted () {
+  async mounted () {
     console.log('mounted!')
+    const data: ProfileState = await this.fetchName(1)
+    console.log(this.firstName)
+    console.log(this.lastName)
   }
 }
 </script>
