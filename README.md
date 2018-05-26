@@ -6,7 +6,7 @@
 
 ## TsConfig配置
 
-```json
+```js
 {
     "compilerOptions": {
       // ts 文件编译成 js 文件的时候，同时生成对应的 map 文件
